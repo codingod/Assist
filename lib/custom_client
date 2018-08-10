@@ -1,0 +1,21 @@
+defmodule SlackprojectWeb.CustomClient do
+  use SlackprojectWeb, :controller
+  use Slack
+  alias Slackproject.User
+  alias Slackproject.Repo
+  alias Slackproject.Changeset
+
+  names = Slack.Web.Users.list(%{token: "xoxp-385208367875-385084588596-390830011590-970c7c4eb61ea268ca29e4149340e40c"})
+  |> Map.get("members")
+  |> Enum.map(fn(member) ->
+    member["real_name"]
+  end)
+
+  def handle_event(message = %{type: "message"}, slack, state) do
+    if message.text == "Hi" do
+      send_message("Hello to you too!", message.channel, slack)
+    end
+    {:ok, state}
+  end
+  
+end
